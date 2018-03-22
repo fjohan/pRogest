@@ -1,4 +1,6 @@
 
+# signal, magrittr, dplyr
+
 mydiff<-function(x) {
   y=x
   for (i in 2:(length(x)-1)) {
