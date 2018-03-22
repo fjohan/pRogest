@@ -1,0 +1,9 @@
+Package: pRogest
+Version: 0.1
+Date: 2018-03-22
+Title: pRogest
+Description: Tools to analyse head movements.
+Author: Johan Frid <johan.frid@humlab.lu.se>
+Maintainer: Johan Frid <johan.frid@humlab.lu.se>
+RoxygenNote: 6.0.1
+License: MIT + file LICENSE

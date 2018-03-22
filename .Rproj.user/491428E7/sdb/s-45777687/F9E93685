@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "\nmydiff<-function(x) {\n  y=x\n  for (i in 2:(length(x)-1)) {\n    y[i]=x[i+1]-x[i-1]\n  }\n  y[1]=y[2]\n  y[length(x)]=y[length(x)-1]\n  y\n}\n\nmybutter <- function(x, samplingRate, order, cutoffs, type, ...) {\n  pre <- x[1:samplingRate]\n  pre[1:samplingRate] <- x[1]\n  pos <- x[1:samplingRate]\n  pos[1:samplingRate] <- x[length(x)]\n  x1<-c(pre,x,pos)\n  y<-signal::butter(n = order, W = cutoffs/samplingRate/2, type = type) %>%\n    signal::filtfilt(x1)\n  y[(samplingRate+1):(length(x1)-samplingRate)]\n}\n\nmyfilter <- function(x) {\n  mybutter(x, 200, order = 5, cutoffs = 20, type = \"low\")\n}\n\n#sweep = read.table(\"0010raw.txt\",h=T,comment.char=\"%\")\n#save(sweep, file=\"data/0010raw.RData\")\nload('data/0010raw.RData')\n\nNR_x_trace_s = myfilter(sweep$Ch9_X)\nNR_y_trace_s = myfilter(sweep$Ch9_Y)\nNR_z_trace_s = myfilter(sweep$Ch9_Z)\n\nNR_speed=(mydiff(NR_x_trace_s)^2+mydiff(NR_y_trace_s)^2+mydiff(NR_z_trace_s)^2)^.5\nplot(NR_speed,type=\"l\")\n",
+    "created" : 1521748654730.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2783066738",
+    "id" : "F9E93685",
+    "lastKnownWriteTime" : 1521755037,
+    "last_content_update" : 1521755037105,
+    "path" : "~/JF_Work/RStudioProjects/pRogest/R/calc_speed.R",
+    "project_path" : "R/calc_speed.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
