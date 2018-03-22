@@ -23,7 +23,7 @@ mybutter <- function(x, samplingRate, order, cutoffs, type, ...) {
 }
 
 myfilter <- function(x) {
-  mybutter(x, 200, order = 5, cutoffs = 20, type = "low")
+  mybutter(x, 200, order = 5, cutoffs = 100, type = "low")
 }
 
 #sweep = read.table("0010raw.txt",h=T,comment.char="%")
@@ -34,5 +34,17 @@ NR_x_trace_s = myfilter(sweep$Ch9_X)
 NR_y_trace_s = myfilter(sweep$Ch9_Y)
 NR_z_trace_s = myfilter(sweep$Ch9_Z)
 
-NR_speed=(mydiff(NR_x_trace_s)^2+mydiff(NR_y_trace_s)^2+mydiff(NR_z_trace_s)^2)^.5
-plot(NR_speed,type="l")
+RE_x_trace_s = myfilter(sweep$Ch10_X)
+RE_y_trace_s = myfilter(sweep$Ch10_Y)
+RE_z_trace_s = myfilter(sweep$Ch10_Z)
+
+#NR_speed=(mydiff(NR_x_trace_s)^2+mydiff(NR_y_trace_s)^2+mydiff(NR_z_trace_s)^2)^.5
+#plot(NR_speed,type="l")
+
+# check bad jumps
+NR_ER_diff=(mydiff(NR_x_trace_s-RE_x_trace_s)^2+
+            mydiff(NR_y_trace_s-RE_y_trace_s)^2+
+            mydiff(NR_z_trace_s-RE_z_trace_s)^2)^.5
+plot(NR_ER_diff,type="l")
+
+
