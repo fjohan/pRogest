@@ -15,25 +15,7 @@ myfixeddiff <- function(x, med=19, thr=5) {
   diffinv(dx)+x[1]
 }
 
-angle<-function(v1, v2) {
-    temp <- sum(v1*v2)/( sqrt(sum(v1^2))*sqrt(sum(v2^2)) )
-    acos(temp)
-}
-
-angle3<-function(v1, v2) {
-    a<-angle(v1,v2)
-    b<-sign(det(rbind(1, v1, v2)))
-    if (a == 0 & b == 1) {
-        jo<-pi/2
-    } else if (a == 0 & b == -1) {
-        jo<- -pi/2
-    } else {
-        jo <- a*b
-    }
-    (pi+jo)%%(2*pi)-pi
-}
-
-# importance function of Ananthakrishnan & Engwall (2011)
+# importance function based on Ananthakrishnan & Engwall (2011)
 myimportance <- function(x) {
     #x<-rbind(NR_x_trace_s,seq(1:6300)*0.005,1)
     #x<-rbind(NR_x_trace_s,NR_y_trace_s,NR_z_trace_s)
@@ -113,6 +95,7 @@ NR_x_trace_s = myfilter(myfixeddiff(sweep$Ch10_X,19,5))
 NR_y_trace_s = myfilter(myfixeddiff(sweep$Ch10_Y,19,5))
 NR_z_trace_s = myfilter(myfixeddiff(sweep$Ch10_Z,19,5))
 
+
 NR_speed=(
   +mydiff(NR_x_trace_s)^2 # f-b
   +mydiff(NR_y_trace_s)^2 # l-r
@@ -130,6 +113,8 @@ df<-data.frame(x,e[1,],e[2,],e[3,],f$imp)
 #df<-data.frame(x,f$imp,f$vel)
 z <- read.zoo(df)
 plot(z[from:to])
+write.table(f$imp,"NR_imp.txt",col.names = "NR_imp", row.names = F)
+
 
 # mark maxima
 plot(df$f[from:to],type="l")
