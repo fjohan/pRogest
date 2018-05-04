@@ -1,6 +1,6 @@
 library(ggplot2)
 
-d<-read.table('mean_av.txt',sep=" ")
+d<-read.table('mean_av_24p.txt',sep=" ")
 d<-read.table('mean_sagAng.txt',sep=" ")
 d<-read.table('mean_speed.txt',sep=" ")
 #d<-read.table('mean_xzspeed.txt',sep=" ")
@@ -23,4 +23,23 @@ d$V3 <- factor(as.character(d$V1),
                         "folkets", "gunst."))
 #with(e, boxplot(V2~V3))
 e<-subset(d, V3!="")
-ggplot(e, aes(x = V3, y = V2)) + geom_boxplot()
+ggplot(e, aes(x = V3, y = V2)) + geom_boxplot() +
+    scale_y_continuous(name="mean angular velocity (rad/s)") +
+    scale_x_discrete(name="word")
+
+w4<-subset(d, V3=="fluga,")
+w5<-subset(d, V3=="både")
+t.test(w4$V2,w5$V2)
+
+w1<-subset(d, V3=="Flyget")
+w2<-subset(d, V3=="tåget")
+t.test(w1$V2,w2$V2)
+
+
+tiff("Fig1.tif", width = 747, height = 400, res = 300, compression = 'lzw')
+ggplot(e, aes(x = V3, y = V2)) + geom_boxplot() +
+    scale_y_continuous(name="mean angular velocity (rad/s)") +
+    scale_x_discrete(name="word")
+dev.off()
+
+bitmap('Fig1.bmp', height = 747, width = 400, units = 'px', type="tifflzw", res=600)
