@@ -171,6 +171,13 @@ w4<-droplevels(subset(d, words %in% c("fluga,")))
 xmdl <- lm((tw1_av-tw2_av) ~ tw1_dur, w4)
 summary(xmdl)
 
+w4.model = lmer(tw1_av-tw2_av ~ tw1_dur + (1|subject), data=w4, REML = FALSE)
+Anova(w4.model)
+
+w4.null = lmer(tw1_av-tw2_av ~ (1+tw1_dur|subject), data=w4, REML = FALSE)
+w4.model = lmer(tw1_av-tw2_av ~ tw1_dur + (1+tw1_dur|subject), data=w4, REML = FALSE)
+anova(w4.null,w4.model)
+
 # (166f: duration of tw1 affected mav difference (χ2 (1)=6.7684, p=0.009278),
 # increasing it by about 0.7414 rad/s ± 0.3231 (standard errors)))
 
