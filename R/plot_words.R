@@ -1,6 +1,9 @@
 library(ggplot2)
+library(ggthemes)
 library(lme4)
 library(dplyr)
+library(officer)
+library(rvg)
 
 #d<-read.table('mean_av_29p.txt',sep=" ")
 d<-read.table('mean_av_166f.txt',sep=" ")
@@ -27,10 +30,18 @@ d$words <- factor(as.character(d$allwords),
                         "företagare", "privatpersoner."))
 
 e<-subset(d, words!="")
-ggplot(e, aes(x = words, y = av)) + geom_boxplot() +
+ggplot(e, aes(x = words, y = av)) +
+    #geom_tufteboxplot() +
+    geom_boxplot() +
     scale_y_continuous(name="mean angular velocity (rad/s)") +
-    scale_x_discrete(name="word")
-
+    scale_x_discrete(name="word") +
+    theme_bw()
+    # theme_fivethirtyeight() +
+    # theme(
+    #     axis.title = element_text()
+    # )
+ggsave("img/sent1.ps")
+    
 w45<-droplevels(subset(d, words %in% c("fluga,", "både")))
 #w45<-droplevels(subset(d, words %in% c("Mobiltelefonen", "nittitalets")))
 
@@ -202,3 +213,10 @@ cor(dat[-want,])
 cor.test(dat$dur, dat$av_diff)
 
 summary(lm(av_diff ~ dur, data = dat))
+
+
+doc <- read_pptx() 
+doc <- add_slide(doc, layout = "Title and Content",
+                 master = "Office Theme")
+doc <- ph_with_vg(doc, ggobj = gg_plot )
+print(doc, target = "img/ph_with_gg.pptx" )
